@@ -12,8 +12,8 @@ networks:
 services:
   zelda-cookbook-backend:
     build: ./zelda_b
-    ports:
-      - "3000:3000"
+    # ports:
+    #   - "3000:3000"
     networks: 
       - net
     depends_on: 
@@ -25,8 +25,8 @@ services:
     build: ./zelda_f
     depends_on: 
       - "zelda-cookbook-backend"
-    ports:
-      - "3001:3000"
+    # ports:
+    #   - "3001:3000"
     networks: 
       - net
 
@@ -40,19 +40,20 @@ services:
       - "POSTGRES_DB=zelda_cookbook"
     networks: 
       - net
-    ports:
-      - "81:5432"
+    # ports:
+    #   - "81:5432"
     volumes:
       - "dbForZeldaPost:/var/lib/postgresql/data"
     
 
 
   nginx:
-    build: ./nginx
+    build: .
     depends_on: 
       - "zelda-cookbook-frontend"
     ports: 
-      - "80:80"
+      - "80:3000"
+      - "81:3100"
     networks: 
       - net
     # volumes:
