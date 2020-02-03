@@ -1,0 +1,65 @@
+version: '3'
+
+# volumes:
+#   fold:
+#   dbForPost:
+
+networks: 
+    net:
+      driver: bridge
+
+services:
+  backend:
+    build: ./zelda_b
+    ports:
+      - "3000:3000"
+    networks: 
+      - net
+    depends_on: 
+      - "db"
+    # volumes:
+    #   - "fold:/var/www/gutendex/static-root/"
+
+  # frontend:
+  #   build: ./zelda_f
+  #   depends_on: 
+  #     - "backend"
+  #   ports:
+  #     - "3001:3001"
+  #   networks: 
+  #     - net
+
+
+  db:
+    build: ./post
+    
+    environment:
+      - "POSTGRES_USER=postgres"
+      - "POSTGRES_PASSWORD=postgres"
+      - "POSTGRES_DB=zelda_cookbook"
+    networks: 
+      - net
+    ports:
+      - "81:5432"
+    # volumes:
+    #   - "dbForPost:/var/lib/postgresql/data"
+
+
+  # nginx:
+  #   build: ./nginx
+  #   depends_on: 
+  #     - "gat"
+  #   ports: 
+  #     - "82:80"
+  #   networks: 
+  #     - net
+    # volumes:
+    #   - "/home/bynet09/Desktop/exam2/nginx.conf:/etc/nginx/nginx.conf"
+    #   - "/home/bynet09/Desktop/exam2/project/static:/usr/share/nginx/html"
+
+#   log:
+#     image:
+#     networks: 
+#       - net
+      
+
