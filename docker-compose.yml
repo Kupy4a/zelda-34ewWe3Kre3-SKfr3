@@ -1,6 +1,7 @@
 version: '3'
 
-# volumes:
+volumes:
+  dbForZeldaPost:
 #   fold:
 #   dbForPost:
 
@@ -9,7 +10,7 @@ networks:
       driver: bridge
 
 services:
-  backend:
+  zelda-cookbook-backend:
     build: ./zelda_b
     ports:
       - "3000:3000"
@@ -20,18 +21,18 @@ services:
     # volumes:
     #   - "fold:/var/www/gutendex/static-root/"
 
-  # frontend:
-  #   build: ./zelda_f
-  #   depends_on: 
-  #     - "backend"
-  #   ports:
-  #     - "3001:3001"
-  #   networks: 
-  #     - net
+  zelda-cookbook-frontend:
+    build: ./zelda_f
+    depends_on: 
+      - "zelda-cookbook-backend"
+    ports:
+      - "3001:3000"
+    networks: 
+      - net
 
 
   db:
-    build: ./post
+    image: postgres
     
     environment:
       - "POSTGRES_USER=postgres"
@@ -41,18 +42,19 @@ services:
       - net
     ports:
       - "81:5432"
-    # volumes:
-    #   - "dbForPost:/var/lib/postgresql/data"
+    volumes:
+      - "dbForZeldaPost:/var/lib/postgresql/data"
+    
 
 
-  # nginx:
-  #   build: ./nginx
-  #   depends_on: 
-  #     - "gat"
-  #   ports: 
-  #     - "82:80"
-  #   networks: 
-  #     - net
+  nginx:
+    build: ./nginx
+    depends_on: 
+      - "zelda-cookbook-frontend"
+    ports: 
+      - "80:80"
+    networks: 
+      - net
     # volumes:
     #   - "/home/bynet09/Desktop/exam2/nginx.conf:/etc/nginx/nginx.conf"
     #   - "/home/bynet09/Desktop/exam2/project/static:/usr/share/nginx/html"

@@ -1,6 +1,6 @@
-FROM node:13.7.0-stretch
+FROM node
 WORKDIR /app
-COPY ./zelda-cookbook-frintend/package.json .
+COPY ./zelda-cookbook-frontend/package.json .
 RUN npm install
-COPY ./zelda-cookbook-frintend .
+COPY ./zelda-cookbook-frontend .
 ENTRYPOINT ["npm", "run", "start"]
